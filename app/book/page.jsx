@@ -2,14 +2,14 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Calendar, Clock, User, Phone, Scissors, Mail } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { getAllServices } from "@/data/services";
 import { barbersData, getAvailableTimeSlots } from "@/data/barbers";
 import OtpInput from "@/components/OtpInput";
 import axios from "axios";
 
-const BookingPage = () => {
+const BookingForm = () => {
   const searchParams = useSearchParams();
   const serviceId = searchParams.get("service");
 
@@ -236,5 +236,11 @@ const BookingPage = () => {
     </div>
   );
 };
+
+const BookingPage = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <BookingForm />
+  </Suspense>
+);
 
 export default BookingPage;

@@ -14,10 +14,10 @@ import {
 import { useSearchParams } from "next/navigation";
 import { getAllServices } from "@/data/services";
 import { barbersData } from "@/data/barbers";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import axios from "axios";
 
-const CheckoutPage = () => {
+const CheckoutContent = () => {
   const searchParams = useSearchParams();
   const services = getAllServices();
 
@@ -213,5 +213,11 @@ const CheckoutPage = () => {
     </div>
   );
 };
+
+const CheckoutPage = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <CheckoutContent />
+  </Suspense>
+);
 
 export default CheckoutPage;

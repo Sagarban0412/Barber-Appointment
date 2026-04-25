@@ -1,11 +1,10 @@
-
 "use client"
-import React from "react";
+import React, { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Header from "@/components/Header";
 import { Check } from "lucide-react";
 
-const Page = () => {
+const ConfirmContent = () => {
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
   const date = searchParams.get("date");
@@ -24,5 +23,11 @@ const Page = () => {
     </>
   );
 };
+
+const Page = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <ConfirmContent />
+  </Suspense>
+);
 
 export default Page;
