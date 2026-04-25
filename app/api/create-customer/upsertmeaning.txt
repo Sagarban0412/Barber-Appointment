@@ -1,0 +1,28 @@
+This line of code is a "Swiss Army Knife" for database operations. In MongoDB, this pattern is called an Upsert (Update + Insert). It allows you to handle both new and returning customers in a single, high-performance step.
+
+Here is the breakdown of the logic:
+
+1. The Query: { email }
+The first argument tells MongoDB how to find the record. It looks for a document where the email matches the one provided.
+
+2. The Atomic Update: $inc and $setOnInsert
+This is the most important part. MongoDB processes these two operators differently:
+
+$inc: { visited: 1 }: This happens every time.
+
+If the user exists, their visited count goes up by 1.
+
+If the user is new, MongoDB starts at 0 and increments to 1.
+
+$setOnInsert: { name, email }: This happens ONLY if a new document is created.
+
+This is crucial because if a returning customer (who already has a name in the DB) provides a slightly different name or no name at all, you won't overwrite their original, "clean" data.
+
+3. The Options Configuration
+The third argument defines how the function should behave:
+
+upsert: true: This is the "magic" switch. If set to false, and the email isn't found, nothing happens. With true, MongoDB will automatically create a new record if no match is found.
+
+new: true: By default, Mongoose returns the document as it was before the update. Setting this to true ensures that the customer variable contains the updated data (including the new visited count).
+
+setDefaultsOnInsert: true: If your Mongoose schema has default values (like createdAt: Date.now), this ensures those defaults are applied when a new record is created via an upsert.
