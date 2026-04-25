@@ -42,10 +42,22 @@ const BookingForm = () => {
     }
   }, [formData.barber, formData.date]);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await axios.post('/api/send-mail',formData);
-    setCorrectOtp(String(res.data.otp))
+    setIsSubmitting(true);
+
+    try {
+      const res = await axios.post("/api/send-mail", formData);
+      setCorrectOtp(String(res.data.otp));
+      setIsActive(true); // <--- This was missing!
+    } catch (error) {
+      console.error("Failed to send OTP:", error);
+      alert("Failed to send OTP. Please check your email.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -58,11 +70,23 @@ const BookingForm = () => {
   const [isActive, setIsActive] = useState(false);
   const [correctOtp, setCorrectOtp] = useState("");
 
+  //setting date
+  const [minDate, setMinDate] = useState("");
+
+  useEffect(() => {
+    setMinDate(new Date().toISOString().split("T")[0]);
+  }, []);
+
+  
   return (
     <div className="relative">
       {isActive && (
         <div className="fixed inset-0 top-10 bg-black/50 flex items-center justify-center">
-          <OtpInput onChange={setIsActive} correctOtp={correctOtp} formData={formData} />
+          <OtpInput
+            onChange={setIsActive}
+            correctOtp={correctOtp}
+            formData={formData}
+          />
         </div>
       )}
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
@@ -174,7 +198,7 @@ const BookingForm = () => {
                     value={formData.date}
                     onChange={handleChange}
                     required
-                    min={new Date().toISOString().split("T")[0]}
+                    min={minDate}
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
                   />
                 </div>
@@ -224,8 +248,15 @@ const BookingForm = () => {
               </div>
 
               {/* Submit Button */}
-              <button className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
-                Book Appointment
+              <button
+                disabled={isSubmitting}
+                className={`w-full font-semibold py-3 px-6 rounded-lg transition-colors ${
+                  isSubmitting
+                    ? "bg-gray-400"
+                    : "bg-red-500 hover:bg-red-600 text-white"
+                }`}
+              >
+                {isSubmitting ? "Sending OTP..." : "Book Appointment"}
               </button>
             </form>
           </div>

@@ -6,6 +6,8 @@ import PopularServices from "@/components/PopularServicesCard";
 import { Droplet, Scissors, Sofa } from "lucide-react";
 import React from "react";
 
+export const dynamic = 'force-dynamic';
+
 const Page = () => {
   return (
     <>
