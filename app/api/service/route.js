@@ -1,5 +1,6 @@
 import { connectDB } from "@/lib/db";
 import Service from "@/models/serviceModel";
+import "@/models/categoryModel";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -30,7 +31,7 @@ export async function POST(request) {
         { status: 400 },
       );
     }
-    const newService = Service.create({
+    const newService = await Service.create({
       name,
       price,
       description,
@@ -38,8 +39,7 @@ export async function POST(request) {
       category,
     });
     return NextResponse.json(
-      { message: "Service created successfully" },
-      newService,
+      { message: "Service created successfully", newService },
       { status: 201 },
     );
   } catch (error) {
