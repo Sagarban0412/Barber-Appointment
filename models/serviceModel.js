@@ -23,12 +23,17 @@ const serviceSchema = new mongoose.Schema(
       default: true,
     },
     category: {
-      type:  mongoose.Schema.Types.ObjectId,
-      ref:"Category",
-      required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
     },
   },
   {
     timestamps: true,
   },
 );
+
+const Service =
+  mongoose.models.Service || mongoose.model("Service", serviceSchema);
+
+export default Service;
