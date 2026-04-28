@@ -6,7 +6,6 @@ export const servicesData = {
       price: 150,
       serviceDesc: "A traditional haircut with clean sides and a natural finish, suitable for all ages.",
       time: "30 mins",
-      imgSrc: "/haircutting.jpg",
       popular: true,
       category: "haircut"
     }

@@ -59,7 +59,7 @@ const Page = () => {
               <ServiceCard
                 key={service.id}
                 id={service.id}
-                imgSrc={service.imgSrc}
+                imgSrc={service.imgSrc || "/barbershop.jpg"}
                 name={service.name}
                 price={service.price}
                 serviceDesc={service.serviceDesc}

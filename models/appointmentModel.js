@@ -23,13 +23,17 @@ const AppointmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    duration: {
+      type: Number,
+      required: true,
+    },
     status: {
       type: String,
-      default: "pending",
-      enum: ["pending", "completed", "cancelled"],
+      default: "booked",
+      enum: ["pending", "booked", "cancelled"],
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Appointment =

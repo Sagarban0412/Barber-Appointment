@@ -20,7 +20,7 @@ const Page = () => {
             Our Philosophy
           </h1>
 
-          <p className="text-gray-400 max-w-[900px] text-justify">
+          <p className="text-gray-400 max-w-225 text-justify">
             We belive a haircut more than just maintenance.it's a ritual. Our
             barber are Master craftmen dedicated to your style,blending
             traditional techniques with modern
@@ -28,7 +28,7 @@ const Page = () => {
 
           {/* Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl mt-6">
-            <div className="h-[200px] shadow-2xl rounded-xl flex items-center justify-center hover:shadow-lg transition flex-col gap-3">
+            <div className="h-50 shadow-2xl rounded-xl flex items-center justify-center hover:shadow-lg transition flex-col gap-3">
               <Scissors className="text-red-400 w-8 h-8" />
               <div>
                 <h1 className="font-semibold text-lg">Master Barbers</h1>
@@ -39,7 +39,7 @@ const Page = () => {
               </div>
             </div>
 
-            <div className="h-[200px] shadow-2xl rounded-xl flex items-center justify-center hover:shadow-lg transition flex-col gap-3">
+            <div className="h-50 shadow-2xl rounded-xl flex items-center justify-center hover:shadow-lg transition flex-col gap-3">
               <Sofa className="text-red-400 w-8 h-8" />
               <div>
                 <h1 className="font-semibold text-lg">Relaxing Atmosphere</h1>
@@ -49,7 +49,7 @@ const Page = () => {
               </div>
             </div>
 
-            <div className="h-[200px] shadow-2xl rounded-xl flex items-center justify-center hover:shadow-lg transition flex-col gap-3">
+            <div className="h-50 shadow-2xl rounded-xl flex items-center justify-center hover:shadow-lg transition flex-col gap-3">
               <Droplet className="text-red-400 w-8 h-8" />
               <div>
                 <h1 className="font-semibold text-lg">Premium Products</h1>
