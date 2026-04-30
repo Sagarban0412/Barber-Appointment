@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Clock1,
   Clock2,
@@ -16,7 +18,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const page = () => {
   const showCases = [
@@ -39,14 +43,155 @@ const page = () => {
       name: "Average Duration",
       value: "45 mins",
       icon: <Clock1 size={40} />,
-    }
+    },
   ];
+
+  const [isOpen, setISOpen] = useState(false);
+  const [services, setServices] = useState({
+    name: "",
+    price: "",
+    duration: "",
+    category: "",
+    description: "",
+  });
+  const [allServices, setAllServices] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+
+  const handleChange = (e) => {
+    setServices((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("/api/service", services);
+      toast.success("Service added successfully!", { autoClose: 2000 });
+    } catch (error) {
+      console.error("Error adding service:", error);
+      toast.error("Failed to add service.", { autoClose: 2000 });
+    } finally {
+      setISOpen(false);
+      setServices({
+        name: "",
+        price: "",
+        duration: "",
+        category: "",
+        description: "",
+      });
+      setRefresh((prev) => !prev);
+    }
+  };
+  const fetchServices = async () => {
+    try {
+      const res = await axios.get("/api/service");
+      setAllServices(res.data);
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    }
+  };
+  useEffect(() => {
+    fetchServices();
+  }, [refresh]);
   return (
     <>
-      <div>
+      <div className="w-full">
+        {isOpen && (
+          <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-md shadow-lg w-96">
+              <h1 className="text-2xl font-bold mb-4">Add New Service</h1>
+              {/* Form fields for adding a new service */}
+              <form onSubmit={handleSubmit}>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">
+                    Service Name
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full border border-gray-300 rounded-md p-2"
+                    placeholder="Enter service name"
+                    name="name"
+                    value={services.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">
+                    Category
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full border border-gray-300 rounded-md p-2"
+                    placeholder="Enter category"
+                    name="category"
+                    value={services.category}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">
+                    Duration
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full border border-gray-300 rounded-md p-2"
+                    placeholder="Enter duration"
+                    name="duration"
+                    value={services.duration}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">
+                    Price
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full border border-gray-300 rounded-md p-2"
+                    placeholder="Enter price"
+                    name="price"
+                    value={services.price}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">
+                    Description
+                  </label>
+                  <textarea
+                    name="description"
+                    id="description"
+                    className="w-full border border-gray-300 rounded-md p-2"
+                    placeholder="Enter description"
+                    value={services.description}
+                    onChange={handleChange}
+                  ></textarea>
+                </div>
+                <div className="flex justify-end gap-4">
+                  <button
+                    className="px-4 py-2 bg-gray-300 rounded-md"
+                    onClick={() => setISOpen(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button className="px-4 py-2 bg-red-400 text-white rounded-md">
+                    Add Service
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
         <div className="flex items-center justify-between mb-4">
           <h1 className="font-medium text-2xl">Services Directory</h1>
-          <button className="px-4 py-2 rounded-sm flex items-center gap-2 bg-red-400 text-white">
+          <button
+            className="px-4 py-2 rounded-sm flex items-center gap-2 bg-red-400 text-white"
+            onClick={() => setISOpen(true)}
+          >
             <Plus /> New Service
           </button>
         </div>
@@ -80,25 +225,38 @@ const page = () => {
           </div>
           <Table>
             <TableHeader>
-                <TableRow className={'text-xl'}>
-                    <TableHead>Service Name</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Duration</TableHead>
-                    <TableHead>Price</TableHead>
-                    <TableHead className={'text-right'}>Actions</TableHead>
-                </TableRow>
+              <TableRow className={"text-xl"}>
+                <TableHead>Service Name</TableHead>
+                <TableHead>Category</TableHead>
+                <TableHead>Duration</TableHead>
+                <TableHead>Price</TableHead>
+                <TableHead className={"text-right"}>Actions</TableHead>
+              </TableRow>
             </TableHeader>
             <TableBody>
-                <TableRow>
-                    <TableCell>Classic Haircut</TableCell>
-                    <TableCell>Haircut</TableCell>
-                    <TableCell>30 mins</TableCell>
-                    <TableCell>$25.00</TableCell>
-                    <TableCell className={'text-right'}>
-                        <button className="px-2 py-1 bg-blue-500 text-white rounded-sm">Edit</button>
-                        <button className="px-2 py-1 bg-red-500 text-white rounded-sm ml-2">Delete</button>
-                    </TableCell>
+              {allServices.map((service) => (
+                <TableRow key={service._id}>
+                  <TableCell>{service.name}</TableCell>
+                  <TableCell>{service.category.name}</TableCell>
+                  <TableCell>{service.duration}</TableCell>
+                  <TableCell>${service.price.toFixed(2)}</TableCell>
+                  <TableCell className={"text-right"}>
+                    <button className="px-2 py-1 bg-blue-500 text-white rounded-sm">
+                      Edit
+                    </button>
+                    <button
+                      className="px-2 py-1 bg-red-500 text-white rounded-sm ml-2"
+                      onClick={() => {
+                        axios.delete(`/api/service/${service._id}`).then(() => {
+                          setRefresh((prev) => !prev);
+                        });
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </TableCell>
                 </TableRow>
+              ))}
             </TableBody>
           </Table>
         </div>

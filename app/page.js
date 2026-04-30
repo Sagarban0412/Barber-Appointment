@@ -5,6 +5,7 @@ import HeroSection from "@/components/HeroSection";
 import PopularServices from "@/components/PopularServicesCard";
 import { Droplet, Scissors, Sofa } from "lucide-react";
 import React from "react";
+import 'react-toastify/dist/ReactToastify.css';
 
 export const dynamic = 'force-dynamic';
 
