@@ -35,6 +35,11 @@ const page = () => {
       value: "$5000",
       icon: <TrendingUp size={40} />,
     },
+    {
+      name: "Average Duration",
+      value: "45 mins",
+      icon: <Clock1 size={40} />,
+    }
   ];
   return (
     <>
@@ -45,11 +50,11 @@ const page = () => {
             <Plus /> New Service
           </button>
         </div>
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-4 gap-4 mb-6">
           {showCases.map((item, index) => (
             <div
               key={index}
-              className="p-5 bg-white shadow-sm w-full rounded-md flex flex-col items-center gap-2 h-32"
+              className="p-5 bg-white shadow-sm w-full rounded-md flex flex-col items-center gap-2 h-32 hover:shadow-xl"
             >
               {item.icon}
               <h1 className="font-bold text-2xl">{item.name}</h1>
