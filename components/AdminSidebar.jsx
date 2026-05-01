@@ -8,6 +8,7 @@ import {
   Scissors,
   Settings,
   User,
+  User2,
 } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -21,7 +22,7 @@ const AdminSidebar = () => {
       icon: <CalendarDays />,
     },
     { name: "Services", link: "/admin/dashboard/services", icon: <Scissors /> },
-    { name: "Customers", link: "/admin/dashboard/customers", icon: <User /> },
+    { name: "Barbers", link: "/admin/dashboard/barbers", icon: <User2 /> },
     { name: "Settings", link: "/admin/dashboard/settings", icon: <Settings /> },
     { name: "Sale Reports", link: "/admin/dashboard/sales", icon: <BarChart /> },
     { name: "Logout", link: "/admin/dashboard/logout", icon: <LogOut /> },

@@ -133,18 +133,6 @@ const page = () => {
                   />
                 </div>
                 <div className="mb-4">
-                  {/* <label className="block text-sm font-medium mb-1">
-                    Category
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full border border-gray-300 rounded-md p-2"
-                    placeholder="Enter category"
-                    name="category"
-                    value={services.category}
-                    onChange={handleChange}
-                    required
-                  /> */}
                   {
                     categories.length > 0 && (
                       <div>
