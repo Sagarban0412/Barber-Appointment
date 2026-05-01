@@ -56,6 +56,7 @@ const page = () => {
   });
   const [allServices, setAllServices] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [update, setUpdate] = useState(false);
 
   const handleChange = (e) => {
     setServices((prev) => {
@@ -65,7 +66,11 @@ const page = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/service", services);
+      {
+        update
+          ? await axios.put(`/api/service/${services._id}`, services)
+          : await axios.post("/api/service", services);
+      }
       toast.success("Service added successfully!", { autoClose: 2000 });
     } catch (error) {
       console.error("Error adding service:", error);
@@ -179,7 +184,7 @@ const page = () => {
                     Cancel
                   </button>
                   <button className="px-4 py-2 bg-red-400 text-white rounded-md">
-                    Add Service
+                    {update ? "Update" : "Add Service"}
                   </button>
                 </div>
               </form>
@@ -190,7 +195,7 @@ const page = () => {
           <h1 className="font-medium text-2xl">Services Directory</h1>
           <button
             className="px-4 py-2 rounded-sm flex items-center gap-2 bg-red-400 text-white"
-            onClick={() => setISOpen(true)}
+            onClick={() => { setISOpen(true); setUpdate(false); setServices({ name: "", price: "", duration: "", category: "", description: "" }); }}
           >
             <Plus /> New Service
           </button>
@@ -241,7 +246,14 @@ const page = () => {
                   <TableCell>{service.duration}</TableCell>
                   <TableCell>${service.price.toFixed(2)}</TableCell>
                   <TableCell className={"text-right"}>
-                    <button className="px-2 py-1 bg-blue-500 text-white rounded-sm">
+                    <button
+                      className="px-2 py-1 bg-blue-500 text-white rounded-sm"
+                      onClick={() => {
+                        setServices(service);
+                        setUpdate(true);
+                        setISOpen(true)
+                      }}
+                    >
                       Edit
                     </button>
                     <button
