@@ -57,6 +57,7 @@ const page = () => {
   const [allServices, setAllServices] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [update, setUpdate] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   const handleChange = (e) => {
     setServices((prev) => {
@@ -95,9 +96,19 @@ const page = () => {
       console.error("Error fetching services:", error);
     }
   };
+  const fetchCategories = async ()=>{
+    try {
+      const res = await axios.get("/api/category");
+      setCategories(res.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  }
   useEffect(() => {
     fetchServices();
+    fetchCategories();
   }, [refresh]);
+
   return (
     <>
       <div className="w-full">
@@ -122,7 +133,7 @@ const page = () => {
                   />
                 </div>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium mb-1">
+                  {/* <label className="block text-sm font-medium mb-1">
                     Category
                   </label>
                   <input
@@ -133,7 +144,30 @@ const page = () => {
                     value={services.category}
                     onChange={handleChange}
                     required
-                  />
+                  /> */}
+                  {
+                    categories.length > 0 && (
+                      <div>
+                        <label className="block text-sm font-medium mb-1">
+                          Category
+                        </label>
+                        <select
+                          name="category"
+                          className="w-full border border-gray-300 rounded-md p-2"
+                          value={services.category}
+                          onChange={handleChange}
+                          required
+                        >
+                          <option value="">Select a category</option>
+                          {categories.map((category) => (
+                            <option key={category._id} value={category._id}>
+                              {category.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )
+                  }
                 </div>
                 <div className="mb-4">
                   <label className="block text-sm font-medium mb-1">
@@ -192,23 +226,35 @@ const page = () => {
           </div>
         )}
         <div className="flex items-center justify-between mb-4">
-          <h1 className="font-medium text-2xl">Services Directory</h1>
+          <h1 className="font-bold md:font-medium text-md md:text-2xl">
+            Services Directory
+          </h1>
           <button
-            className="px-4 py-2 rounded-sm flex items-center gap-2 bg-red-400 text-white"
-            onClick={() => { setISOpen(true); setUpdate(false); setServices({ name: "", price: "", duration: "", category: "", description: "" }); }}
+            className=" p-1 py-2 md:px-4 md:py-2 rounded-sm flex items-center gap-2 bg-red-400 text-white"
+            onClick={() => {
+              setISOpen(true);
+              setUpdate(false);
+              setServices({
+                name: "",
+                price: "",
+                duration: "",
+                category: "",
+                description: "",
+              });
+            }}
           >
             <Plus /> New Service
           </button>
         </div>
-        <div className="grid grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           {showCases.map((item, index) => (
             <div
               key={index}
               className="p-5 bg-white shadow-sm w-full rounded-md flex flex-col items-center gap-2 h-32 hover:shadow-xl"
             >
               {item.icon}
-              <h1 className="font-bold text-2xl">{item.name}</h1>
-              <p>{item.value}</p>
+              <h1 className="font-bold text-sm md:text-2xl">{item.name}</h1>
+              <p className="text-sm md:text-base">{item.value}</p>
             </div>
           ))}
         </div>
@@ -216,15 +262,15 @@ const page = () => {
         {/* All services will be listed here. You can add, edit, or remove services as needed. */}
         <div className="bg-white shadow-sm rounded-md p-4">
           <div className="flex justify-between items-center border-b">
-            <h1 className="font-medium text-2xl">Manage Services</h1>
+            <h1 className="font-medium text-sm md:text-2xl">Manage Services</h1>
             <div className="flex gap-4">
-              <div className="flex items-center gap-2 mb-4 bg-gray-300 px-4 py-2 rounded-sm">
+              <div className="flex items-center gap-2 mb-4 shadow-2xs p-1 md:px-4 md:py-2 rounded-sm">
                 <ListFilter />
-                <p>Filter</p>
+                <p className="text-[14px] hidden md:block">Filter</p>
               </div>
-              <div className="flex items-center gap-2 mb-4 bg-gray-300 px-4 py-2 rounded-sm">
+              <div className="flex items-center gap-2 mb-4 shadow-2xs md:px-4 md:py-2 rounded-sm">
                 <Download />
-                <p>Export</p>
+                <p className="text-[14px] hidden md:block">Export</p>
               </div>
             </div>
           </div>
@@ -251,7 +297,7 @@ const page = () => {
                       onClick={() => {
                         setServices(service);
                         setUpdate(true);
-                        setISOpen(true)
+                        setISOpen(true);
                       }}
                     >
                       Edit

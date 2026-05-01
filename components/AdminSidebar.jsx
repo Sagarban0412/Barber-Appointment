@@ -29,7 +29,7 @@ const AdminSidebar = () => {
 
   const [isActive, setIsActive] = useState("Dashboard");
   return (
-    <div className="w-1/5 bg-black  text-white h-screen">
+    <div className="w-1/5 bg-black  text-white h-screen hidden md:block">
       <div className="flex items-center h-20 border-b border-gray-700 px-6 gap-2 font-bold text-2xl text-center">
         <Scissors size={40} className="text-red-500" />
         <h1>Barber Shop</h1>
