@@ -21,7 +21,8 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     await connectDB();
-    const { name, email, specialty, workingHours } = await request.json();
+    const { name, email, specialty, start, end } = await request.json();
+    console.log(name, email, specialty, start, end);
     const isExist = await Barber.findOne({ email });
     if (isExist) {
       return NextResponse.json(
@@ -29,7 +30,12 @@ export async function POST(request) {
         { status: 400 },
       );
     }
-    const barber = await Barber.create({ name, email, specialty, workingHours });
+    const barber = await Barber.create({
+      name,
+      email,
+      specialty,
+      workingHours: { start, end },
+    });
     return NextResponse.json({
       message: "Barber created successfully",
       barber,
@@ -41,4 +47,3 @@ export async function POST(request) {
     );
   }
 }
-

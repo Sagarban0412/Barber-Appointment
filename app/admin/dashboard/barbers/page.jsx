@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import {
+  ChartNoAxesColumnIncreasing,
   Download,
   ListFilter,
   Pencil,
@@ -20,6 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { toast } from "react-toastify";
 
 const page = () => {
   const showCase = [
@@ -36,14 +38,62 @@ const page = () => {
   ];
   const [barbers, setBarbers] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const fetchBarbers = async () => {
-    const res = await axios.get("/api/barber");
-    setBarbers(res.data.barbers);
-    console.log("barber", barbers);
-  };
+  const [refresh, setRefresh] = useState(true);
   useEffect(() => {
+    const fetchBarbers = async () => {
+      try {
+        const res = await axios.get("/api/barber");
+        setBarbers(res.data.barbers || []);
+      } catch (error) {
+        console.error("Error fetching barbers:", error);
+      }
+    };
     fetchBarbers();
-  }, []);
+  }, [refresh]);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    specialty: "",
+    start: "",
+    end: "",
+  });
+  const handleChange = (e) => {
+    setFormData((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+    try {
+      const payload = {
+        ...formData,
+        specialty: formData.specialty
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
+      };
+      await axios.post("/api/barber", payload);
+      setIsOpen(false);
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      console.error("Error adding barber:", error);
+    }
+  };
+
+  // handling the delete data for barbers
+
+  const handleDelete = async (id) => {
+    try {
+      alert("are you sure you wnat to delete")
+      await axios.delete(`/api/barber/${id}`);
+      toast.success("delete successfully");
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      console.error("Error deleting barber:", error);
+    }
+  };
 
   return (
     <>
@@ -51,7 +101,7 @@ const page = () => {
         {isOpen && (
           <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
             <div className="bg-white p-4 w-96 rounded-lg">
-              <form className="flex flex-col gap-4">
+              <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-2">
                   <label htmlFor="name">Name</label>
                   <input
@@ -60,6 +110,8 @@ const page = () => {
                     id="name"
                     placeholder="Enter Barber Name"
                     className="border-none h-8 rounded-sm px-2 bg-gray-50 "
+                    value={formData.name}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="flex flex-col gap-2">
@@ -70,26 +122,46 @@ const page = () => {
                     id="email"
                     placeholder="Enter Barber Email Address"
                     className="border-none h-8 rounded-sm px-2 bg-gray-50 "
+                    value={formData.email}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="flex flex-col gap-2 ">
-                  <label htmlFor="speciality">Speciality</label>
+                  <label htmlFor="specialty">Speciality</label>
                   <input
                     type="text"
-                    name="speciality"
-                    id="speciality"
-                    placeholder="Enter Barber Speciality"
+                    name="specialty"
+                    id="specialty"
+                    placeholder="e.g. fade, massage, haircut"
                     className="border-none h-8 rounded-sm px-2 bg-gray-50 "
+                    value={formData.specialty}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="flex gap-2 justify-between">
                   <div className="flex flex-col gap-2">
                     <label htmlFor="start">Start</label>
-                    <input type="time" name="start" id="start" />
+                    <input
+                      type="time"
+                      name="start"
+                      id="start"
+                      placeholder="Select Start Time"
+                      className="border-none h-8 rounded-sm px-2 bg-gray-50 "
+                      value={formData.start}
+                      onChange={handleChange}
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="end">End</label>
-                    <input type="time" name="end" id="end" />
+                    <input
+                      type="time"
+                      name="end"
+                      id="end"
+                      placeholder="Select end time"
+                      className="border-none h-8 rounded-sm px-2 bg-gray-50 "
+                      value={formData.end}
+                      onChange={handleChange}
+                    />
                   </div>
                 </div>
                 <div className="flex justify-end gap-4">
@@ -161,7 +233,7 @@ const page = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {barbers &&
+                {barbers.length > 0 ? (
                   barbers.map((barber) => (
                     <TableRow key={barber._id}>
                       <TableCell>{barber.name}</TableCell>
@@ -180,12 +252,19 @@ const page = () => {
                         <button>
                           <Pencil className="text-blue-400 cursor-pointer" />
                         </button>
-                        <button>
+                        <button onClick={() => handleDelete(barber._id)}>
                           <Trash2 className="text-red-500 cursor-pointer" />
                         </button>
                       </TableCell>
                     </TableRow>
-                  ))}
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center">
+                      No barbers found
+                    </TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </div>
