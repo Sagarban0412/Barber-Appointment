@@ -180,7 +180,7 @@ const page = () => {
           </div>
         )}
         <div className="flex justify-between items-center">
-          <h1 className="font-bold text-xl md:text-2xl">Barber Management</h1>
+          <h1 className="font-bold text-sm md:text-2xl">Barber Management</h1>
           <button
             className="flex justify-center items-center bg-red-400 p-1 md:px-2 md:py-1 rounded-sm"
             onClick={() => setIsOpen(true)}
@@ -203,7 +203,7 @@ const page = () => {
           ))}
         </div>
         {/* Management of barbers */}
-        <div className="w-full m-5">
+        <div className="w-full ">
           <div className="flex justify-between items-center px-4">
             <h1 className="font-light md:font-bold text-sm md:text-2xl">
               Manage Barbers
