@@ -7,12 +7,13 @@ const AppointmentSchema = new mongoose.Schema(
       required: true,
     },
     serviceId: {
-      type: String, // mongoose.Schema.Types.ObjectId,
-      // ref: 'Service',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Service",
       required: true,
     },
     barberId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Barber",
       required: true,
     },
     appointmentDate: {
@@ -21,10 +22,6 @@ const AppointmentSchema = new mongoose.Schema(
     },
     appointmentTime: {
       type: String,
-      required: true,
-    },
-    duration: {
-      type: Number,
       required: true,
     },
     status: {

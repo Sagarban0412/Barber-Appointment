@@ -5,7 +5,7 @@ import { Calendar, Clock, User, Phone, Scissors, Mail } from "lucide-react";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { getAllServices } from "@/data/services";
-import {getAvailableTimeSlots } from "@/data/barbers";
+import { generateTimeSlots } from "@/data/barbers";
 import OtpInput from "@/components/OtpInput";
 import axios from "axios";
 
@@ -59,14 +59,26 @@ const BookingForm = () => {
   }, [serviceId]);
 
   useEffect(() => {
-    if (formData.barber && formData.date) {
-      const slots = getAvailableTimeSlots(formData.barber, formData.date);
-      setAvailableTimeSlots(slots);
-      setFormData((prev) => ({ ...prev, time: "" })); // Reset time when barber/date changes
+    if (formData.barber && formData.date && formData.service) {
+      const selectedBarber = barbers.find((b) => b._id === formData.barber);
+      const selectedService = services.find((s) => s._id === formData.service);
+
+      if (selectedBarber?.workingHours && selectedService?.duration) {
+        const slots = generateTimeSlots(
+          selectedBarber.workingHours.start,
+          selectedBarber.workingHours.end,
+          selectedService.duration
+        );
+        setAvailableTimeSlots(slots);
+      } else {
+        setAvailableTimeSlots([]);
+      }
+      setFormData((prev) => ({ ...prev, time: "" }));
     } else {
       setAvailableTimeSlots([]);
     }
-  }, [formData.barber, formData.date]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.barber, formData.date, formData.service]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -238,12 +250,12 @@ const BookingForm = () => {
                     value={formData.time}
                     onChange={handleChange}
                     required
-                    disabled={!formData.barber || !formData.date}
+                    disabled={!formData.barber || !formData.date || !formData.service}
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <option value="">
-                      {!formData.barber || !formData.date
-                        ? "Select barber and date first"
+                      {!formData.barber || !formData.date || !formData.service
+                        ? "Select service, barber and date first"
                         : availableTimeSlots.length === 0
                           ? "No available slots"
                           : "Select time"}

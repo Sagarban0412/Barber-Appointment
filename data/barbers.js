@@ -1,53 +1,25 @@
-export const barbersData = [
-  {
-    id: 1,
-    name: "John Smith",
-    specialties: ["Classic Cuts", "Beard Styling"],
-    experience: "8 years",
-    rating: 4.9,
-    schedule: {
-      monday: ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "14:00", "14:30", "15:00", "15:30"],
-      tuesday: ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "14:00", "14:30", "15:00", "15:30"],
-      wednesday: ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "14:00", "14:30", "15:00", "15:30"],
-      thursday: ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "14:00", "14:30", "15:00", "15:30"],
-      friday: ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "14:00", "14:30", "15:00", "15:30"],
-      saturday: ["10:00", "10:30", "11:00", "11:30", "16:00", "16:30", "17:00", "17:30"],
-      sunday: []
-    }
-  },
-  {
-    id: 2,
-    name: "Mike Johnson",
-    specialties: ["Modern Cuts", "Hot Towel Shave"],
-    experience: "12 years",
-    rating: 4.8,
-    schedule: {
-      monday: ["10:00", "10:30", "11:00", "11:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"],
-      tuesday: ["10:00", "10:30", "11:00", "11:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"],
-      wednesday: ["10:00", "10:30", "11:00", "11:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"],
-      thursday: ["10:00", "10:30", "11:00", "11:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"],
-      friday: ["10:00", "10:30", "11:00", "11:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"],
-      saturday: ["09:00", "09:30", "10:00", "10:30", "14:00", "14:30", "15:00", "15:30"],
-      sunday: ["12:00", "12:30", "14:00", "14:30", "15:00", "15:30"]
-    }
-  },
-  {
-    id: 3,
-    name: "David Wilson",
-    specialties: ["All Services", "Premium Packages"],
-    experience: "15 years",
-    rating: 5.0,
-    schedule: {
-      monday: ["09:00", "09:30", "10:00", "10:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"],
-      tuesday: ["09:00", "09:30", "10:00", "10:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"],
-      wednesday: ["09:00", "09:30", "10:00", "10:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"],
-      thursday: ["09:00", "09:30", "10:00", "10:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"],
-      friday: ["09:00", "09:30", "10:00", "10:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"],
-      saturday: ["11:00", "11:30", "12:00", "12:30", "16:00", "16:30", "17:00", "17:30"],
-      sunday: []
-    }
+const BUFFER_MINUTES = 10;
+
+export const generateTimeSlots = (start, end, durationMinutes) => {
+  const slots = [];
+  const slotInterval = durationMinutes + BUFFER_MINUTES;
+
+  const [startH, startM] = start.split(":").map(Number);
+  const [endH, endM] = end.split(":").map(Number);
+
+  let current = startH * 60 + startM;
+  const endTotal = endH * 60 + endM;
+
+  while (current + durationMinutes <= endTotal) {
+    const h = Math.floor(current / 60).toString().padStart(2, "0");
+    const m = (current % 60).toString().padStart(2, "0");
+    slots.push(`${h}:${m}`);
+    current += slotInterval;
   }
-];
+
+  return slots;
+};
+ 
 
 export const getDayName = (dateString) => {
   const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];

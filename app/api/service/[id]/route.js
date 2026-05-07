@@ -1,7 +1,21 @@
 import { connectDB } from "@/lib/db";
 import Service from "@/models/serviceModel";
+import "@/models/categoryModel";
 import { NextResponse } from "next/server";
 
+export async function GET(request, { params }) {
+  try {
+    await connectDB();
+    const { id } = await params;
+    const service = await Service.findById(id).populate("category", "name");
+    if (!service) {
+      return NextResponse.json({ message: "Service not found" }, { status: 404 });
+    }
+    return NextResponse.json({ service });
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
 export async function PUT(request, { params }) {
   try {
     await connectDB();
