@@ -5,7 +5,7 @@ import { Calendar, Clock, User, Phone, Scissors, Mail } from "lucide-react";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { getAllServices } from "@/data/services";
-import { barbersData, getAvailableTimeSlots } from "@/data/barbers";
+import {getAvailableTimeSlots } from "@/data/barbers";
 import OtpInput from "@/components/OtpInput";
 import axios from "axios";
 
@@ -24,8 +24,34 @@ const BookingForm = () => {
   });
 
   const [availableTimeSlots, setAvailableTimeSlots] = useState([]);
-  const services = getAllServices();
+  const [services, setServices] = useState([]);
+  const [barbers, setBarbers] = useState([]);
 
+  // Fetch services on component mount
+  useEffect(() => {
+    const getAllServices = async () => {
+      try {
+        const service = await axios.get("/api/service");
+        setServices(service.data);
+        console.log(service.data);
+      } catch (error) {
+        console.error("Failed to fetch services:", error);
+      }
+    };
+    const getBarbers = async ()=>{
+      try{
+        const barber = await axios.get('/api/barber')
+        setBarbers(barber.data.barbers);
+        console.log(barber.data.barbers)
+      }catch(error){
+        console.error("Failed to fetch barbers:", error);
+      }
+    }
+    getBarbers();
+    getAllServices();
+  }, []);
+
+  // Set initial service from URL query param
   useEffect(() => {
     if (serviceId) {
       setFormData((prev) => ({ ...prev, service: serviceId }));
@@ -77,7 +103,6 @@ const BookingForm = () => {
     setMinDate(new Date().toISOString().split("T")[0]);
   }, []);
 
-  
   return (
     <div className="relative">
       {isActive && (
@@ -156,7 +181,7 @@ const BookingForm = () => {
                   >
                     <option value="">Choose a service</option>
                     {services.map((service) => (
-                      <option key={service.id} value={service.id}>
+                      <option key={service._id} value={service._id}>
                         {service.name} - ₹{service.price}
                       </option>
                     ))}
@@ -176,9 +201,9 @@ const BookingForm = () => {
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
                   >
                     <option value="">Choose a barber</option>
-                    {barbersData.map((barber) => (
-                      <option key={barber.id} value={barber.id}>
-                        {barber.name} - {barber.experience} (★{barber.rating})
+                    {barbers.map((barber) => (
+                      <option key={barber._id} value={barber._id}>
+                        {barber.name} - {barber.specialty[0]+", "+ barber.specialty[1]}
                       </option>
                     ))}
                   </select>

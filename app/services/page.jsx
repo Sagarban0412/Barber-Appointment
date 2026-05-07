@@ -1,11 +1,20 @@
+"use client";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Link from "next/link";
-import React from "react";
-import { servicesData } from "@/data/services";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Page = () => {
-  const services = servicesData;
+  const [services, setServices] = useState([]);
+  useEffect(() => {
+    async function fetchServices() {
+      const allService = await axios.get("/api/service");
+      setServices(allService.data);
+      console.log(allService.data);
+    }
+    fetchServices();
+  }, []);
 
   return (
     <>
@@ -55,47 +64,15 @@ const Page = () => {
         <div className="mt-4">
           <h1 className="font-bold text-2xl mb-2">HairCut</h1>
           <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible pb-4">
-            {services.haircut.map((service) => (
+            {services.map((service) => (
               <ServiceCard
-                key={service.id}
-                id={service.id}
+                key={service._id}
+                id={service._id}
                 imgSrc={service.imgSrc || "/barbershop.jpg"}
                 name={service.name}
                 price={service.price}
-                serviceDesc={service.serviceDesc}
-                time={service.time}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="mt-4">
-          <h1 className="font-bold text-2xl mb-2">Beard-Trim & Shaves</h1>
-          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible pb-4">
-            {services.beardAndShave.map((service) => (
-              <ServiceCard
-                key={service.id}
-                id={service.id}
-                imgSrc={service.imgSrc}
-                name={service.name}
-                price={service.price}
-                serviceDesc={service.serviceDesc}
-                time={service.time}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="mt-4">
-          <h1 className="font-bold text-2xl mb-2">Package</h1>
-          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible pb-4">
-            {services.packages.map((service) => (
-              <ServiceCard
-                key={service.id}
-                id={service.id}
-                imgSrc={service.imgSrc}
-                name={service.name}
-                price={service.price}
-                serviceDesc={service.serviceDesc}
-                time={service.time}
+                serviceDesc={service.description}
+                time={service.duration}
               />
             ))}
           </div>
@@ -107,7 +84,7 @@ const Page = () => {
 };
 
 /* Service Card Component */
-const ServiceCard = ({ imgSrc, name, price, serviceDesc, time, id}) => {
+const ServiceCard = ({ imgSrc, name, price, serviceDesc, time, id }) => {
   return (
     <div
       className="

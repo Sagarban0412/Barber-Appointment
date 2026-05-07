@@ -27,7 +27,7 @@ export default function DashboardLayout({ children }) {
       >
         <div className="flex">
           <AdminSidebar />
-          <div className="w-full">
+          <div className="w-full md:ml-64">
             <AdminHeader/>
             <main className="p-3 md:p-6">{children}</main>
           </div>
