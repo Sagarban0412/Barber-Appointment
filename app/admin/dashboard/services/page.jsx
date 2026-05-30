@@ -23,10 +23,12 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const page = () => {
+  const [allServices, setAllServices] = useState([]);
+  const noOfServices = allServices.length
   const showCases = [
     {
       name: "Total Services",
-      value: 20,
+      value: noOfServices,
       icon: <Scissors size={40} />,
     },
     {
@@ -54,11 +56,9 @@ const page = () => {
     category: "",
     description: "",
   });
-  const [allServices, setAllServices] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [update, setUpdate] = useState(false);
   const [categories, setCategories] = useState([]);
-
   const handleChange = (e) => {
     setServices((prev) => {
       return { ...prev, [e.target.name]: e.target.value };

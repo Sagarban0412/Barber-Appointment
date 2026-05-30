@@ -74,10 +74,26 @@ const page = () => {
       </div>
     );
 
-  const { overview, popularServices, barberStats, monthlyRevenue, recentAppointments } = stats;
+  const {
+    overview,
+    popularServices,
+    barberStats,
+    monthlyRevenue,
+    recentAppointments,
+  } = stats;
 
-  const revenueKey = { total: "totalRevenue", today: "todayRevenue", week: "weekRevenue", month: "monthRevenue" };
-  const appointmentKey = { total: "totalAppointments", today: "todayAppointments", week: "weekAppointments", month: "monthAppointments" };
+  const revenueKey = {
+    total: "totalRevenue",
+    today: "todayRevenue",
+    week: "weekRevenue",
+    month: "monthRevenue",
+  };
+  const appointmentKey = {
+    total: "totalAppointments",
+    today: "todayAppointments",
+    week: "weekAppointments",
+    month: "monthAppointments",
+  };
 
   return (
     <div className="space-y-6">
@@ -88,7 +104,9 @@ const page = () => {
               key={f}
               onClick={() => setFilter(f)}
               className={`px-3 py-1 rounded-lg text-sm capitalize ${
-                filter === f ? "bg-red-400 text-white" : "bg-gray-100 text-gray-600"
+                filter === f
+                  ? "bg-red-400 text-white"
+                  : "bg-gray-100 text-gray-600"
               }`}
             >
               {f}
@@ -145,7 +163,9 @@ const page = () => {
 
       {/* Monthly Revenue Chart */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Monthly Revenue (Last 6 Months)</h2>
+        <h2 className="text-lg font-semibold text-gray-700 mb-4">
+          Monthly Revenue (Last 6 Months)
+        </h2>
         <ResponsiveContainer width="100%" height={250}>
           <BarChart data={monthlyRevenue}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -160,7 +180,9 @@ const page = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Popular Services */}
         <div className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-700 mb-4">Popular Services</h2>
+          <h2 className="text-lg font-semibold text-gray-700 mb-4">
+            Popular Services
+          </h2>
           <div className="space-y-3">
             {popularServices.map((s, i) => (
               <div key={i} className="flex items-center justify-between">
@@ -169,10 +191,14 @@ const page = () => {
                   <div className="w-32 bg-gray-100 rounded-full h-2">
                     <div
                       className="bg-red-400 h-2 rounded-full"
-                      style={{ width: `${(s.count / popularServices[0].count) * 100}%` }}
+                      style={{
+                        width: `${(s.count / popularServices[0].count) * 100}%`,
+                      }}
                     />
                   </div>
-                  <span className="text-sm font-medium text-gray-700 w-6">{s.count}</span>
+                  <span className="text-sm font-medium text-gray-700 w-6">
+                    {s.count}
+                  </span>
                 </div>
               </div>
             ))}
@@ -181,7 +207,9 @@ const page = () => {
 
         {/* Barber Performance */}
         <div className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-700 mb-4">Barber Performance</h2>
+          <h2 className="text-lg font-semibold text-gray-700 mb-4">
+            Barber Performance
+          </h2>
           <Table>
             <TableHeader>
               <TableRow>
@@ -205,7 +233,9 @@ const page = () => {
 
       {/* Recent Appointments */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Recent Appointments</h2>
+        <h2 className="text-lg font-semibold text-gray-700 mb-4">
+          Recent Appointments
+        </h2>
         <Table>
           <TableHeader>
             <TableRow>
@@ -224,14 +254,20 @@ const page = () => {
                 <TableCell>{a.customerId}</TableCell>
                 <TableCell>{a.serviceId?.name ?? "—"}</TableCell>
                 <TableCell>{a.barberId?.name ?? "—"}</TableCell>
-                <TableCell>{new Date(a.appointmentDate).toLocaleDateString()}</TableCell>
+                <TableCell>
+                  {new Date(a.appointmentDate).toLocaleDateString()}
+                </TableCell>
                 <TableCell>{a.appointmentTime}</TableCell>
                 <TableCell>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    a.status === "completed" ? "bg-green-100 text-green-600" :
-                    a.status === "cancelled" ? "bg-red-100 text-red-600" :
-                    "bg-yellow-100 text-yellow-600"
-                  }`}>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      a.status === "completed"
+                        ? "bg-green-100 text-green-600"
+                        : a.status === "cancelled"
+                          ? "bg-red-100 text-red-600"
+                          : "bg-yellow-100 text-yellow-600"
+                    }`}
+                  >
                     {a.status}
                   </span>
                 </TableCell>

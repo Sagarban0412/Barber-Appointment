@@ -24,21 +24,16 @@ import {
 import { toast } from "react-toastify";
 
 const page = () => {
-  const showCase = [
-    {
-      name: "Total Barber",
-      value: 5,
-      icon: <Users />,
-    },
-    {
-      name: "Active Barber",
-      value: 3,
-      icon: <UserCheck />,
-    },
-  ];
   const [barbers, setBarbers] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [refresh, setRefresh] = useState(true);
+
+  const noOfBarber = barbers.length;
+  const noOfActiveBarber = barbers.filter((b) => b.isActive).length;
+  const showCase = [
+    { name: "Total Barber", value: noOfBarber, icon: <Users /> },
+    { name: "Active Barber", value: noOfActiveBarber, icon: <UserCheck /> },
+  ];
   useEffect(() => {
     const fetchBarbers = async () => {
       try {
