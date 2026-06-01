@@ -36,7 +36,7 @@ const HeroSection = () => {
               >
                 Book Appointment
               </Link>
-              <Link href={'/'} className="px-8 py-3 border-2 border-white/30 text-center text-white font-semibold rounded-lg hover:bg-white/10 transition-all duration-300">
+              <Link href={'/services'} className="px-8 py-3 border-2 border-white/30 text-center text-white font-semibold rounded-lg hover:bg-white/10 transition-all duration-300">
                 View Services
               </Link>
             </div>

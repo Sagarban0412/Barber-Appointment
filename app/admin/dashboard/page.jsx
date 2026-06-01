@@ -41,7 +41,7 @@ const StatCard = ({ title, value, icon, sub }) => (
   </div>
 );
 
-const page = () => {
+const Page = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("total");
@@ -281,4 +281,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

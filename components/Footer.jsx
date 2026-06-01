@@ -1,54 +1,76 @@
 import { Scissors } from "lucide-react";
 import React from "react";
+import Link from "next/link";
 
 const Footer = () => {
   return (
     <>
-      <div className="flex flex-col xl:flex-row justify-between px-4 md:px-6 lg:px-10 xl:px-20 py-10 bg-black/90 text-white/50">
-        <div className="flex flex-col xl:w-56 gap-5 pb-5">
-          <div className="flex items-center ga">
-            <Scissors className="w-8 h-8 text-red-400" />
-            <h1 className="font-semibold text-sm md:text-lg lg:text-xl">
+      <div className="flex flex-col xl:flex-row justify-between px-4 md:px-6 lg:px-10 xl:px-20 py-12 bg-black/95 text-white/50 border-t border-gray-800">
+        <div className="flex flex-col xl:w-64 gap-5 pb-5">
+          <div className="flex items-center gap-2">
+            <Scissors className="w-8 h-8 text-red-500" />
+            <h1 className="font-extrabold text-xl text-white tracking-wider uppercase">
               BarberShop
             </h1>
           </div>
-          <p className="text-justify">
-            Modern Grooming for the gentalman. Book appointment today and
-            experience the different looks.
+          <p className="text-sm leading-relaxed text-justify text-gray-400">
+            Modern Grooming for the gentleman. Book an appointment today and experience precision styling in an ultra-relaxing ambiance.
           </p>
         </div>
-        <div className="flex flex-col gap-5">
-          <h1 className="font-semibold text-xl text-center">Quick Links</h1>
-          <ul className="text-center">
-            <li>Home</li>
-            <li>Gallery</li>
-            <li>Services</li>
-            <li>About</li>
-            <li>Contact</li>
+        
+        <div className="flex flex-col gap-4">
+          <h1 className="font-bold text-lg text-white mb-2">Quick Links</h1>
+          <ul className="space-y-2 text-sm text-gray-400">
+            <li>
+              <Link href="/" className="hover:text-red-500 transition-colors">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link href="/gallary" className="hover:text-red-500 transition-colors">
+                Gallery
+              </Link>
+            </li>
+            <li>
+              <Link href="/services" className="hover:text-red-500 transition-colors">
+                Services
+              </Link>
+            </li>
+            <li>
+              <Link href="/about" className="hover:text-red-500 transition-colors">
+                About
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" className="hover:text-red-500 transition-colors">
+                Contact
+              </Link>
+            </li>
           </ul>
         </div>
-        <div className="flex flex-col gap-5 text-center py-3">
-          <h1 className="font-semibold text-xl ">Opening Hours</h1>
-          <div>
+
+        <div className="flex flex-col gap-4 py-3 xl:py-0">
+          <h1 className="font-bold text-lg text-white mb-2">Opening Hours</h1>
+          <div className="text-sm space-y-1.5 text-gray-400">
             <p>Wed-Mon: 8:00 AM - 8:00 PM</p>
             <p>
-              Tue: <span className="text-red-600">Closed</span>
+              Tuesday: <span className="text-red-500 font-bold uppercase">Closed</span>
             </p>
           </div>
         </div>
-        <div className="text-center py-3">
-          <h1 className="font-semibold text-xl">Find Us</h1>
-          <div className="flex justify-center">
+
+        <div className="py-3 xl:py-0 flex flex-col gap-4 max-w-sm">
+          <h1 className="font-bold text-lg text-white mb-2">Find Us</h1>
+          <div className="rounded-xl overflow-hidden shadow-lg border border-gray-800 bg-slate-900/50">
             <img
               src="/location.png"
-              alt="location"
-              className="h-52 w-[400px]"
+              alt="location map coordinate"
+              className="h-32 w-80 object-cover opacity-80 hover:opacity-100 transition-opacity duration-300"
             />
           </div>
-          <p>
-            bhadrapur-9,chandragadi,
-            <br />
-            Near Subisu office,infront of TVS showroom
+          <p className="text-xs text-gray-400 leading-relaxed">
+            bhadrapur-9, chandragadi, <br />
+            Near Subisu office, infront of TVS showroom
           </p>
         </div>
       </div>
