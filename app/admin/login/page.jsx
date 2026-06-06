@@ -22,7 +22,9 @@ const page = () => {
     try {
       e.preventDefault();
       setIsLoggedIn(true);
-      await axios.post("/api/admin", loginData);
+      await axios.post("/api/admin", loginData,{
+        withCredentials:true
+      });
       // console.log(res.data);
       router.push("/admin/dashboard");
     } catch (error) {
