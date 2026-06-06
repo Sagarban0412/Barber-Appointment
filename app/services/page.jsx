@@ -64,20 +64,15 @@ const Page = () => {
           alt="Barbershop Header"
           className="absolute inset-0 w-full h-full object-cover opacity-35"
         />
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-50 via-slate-950/80 to-slate-950 dark:from-gray-900"></div>
 
         {/* Hero Content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <span className="inline-block px-3 py-1 rounded-full bg-red-500/10 text-red-500 dark:text-red-400 text-xs font-semibold tracking-wider uppercase mb-3 border border-red-500/20">
-            Tailored Styling Menus
-          </span>
           
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-800 dark:text-white mb-3">
-            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">Grooming Services</span>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-3">
+            Our <span className="text-transparent bg-clip-text bg-linear-to-r from-red-500 to-orange-500">Grooming Services</span>
           </h1>
 
-          <p className="text-gray-600 dark:text-gray-300 max-w-2xl text-sm md:text-base leading-relaxed">
+          <p className="dark:text-gray-300 max-w-2xl text-sm md:text-base leading-relaxed">
             Look Sharp, Feel Sharp. Explore our range of premium grooming services designed for the modern gentleman. From classic cuts to steam shaves and elite combos.
           </p>
         </div>
@@ -175,7 +170,7 @@ const ServiceCard = ({ imgSrc, name, price, serviceDesc, time, id }) => {
         {/* Image Container */}
         <div className="h-44 w-full overflow-hidden relative">
           <img src={imgSrc} alt={name} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
           <span className="absolute bottom-3 right-3 text-xs font-semibold px-2.5 py-1 bg-black/60 text-white rounded-lg backdrop-blur-sm">
             {time}
           </span>
@@ -193,7 +188,7 @@ const ServiceCard = ({ imgSrc, name, price, serviceDesc, time, id }) => {
       </div>
 
       {/* Card Footer */}
-      <div className="p-5 pt-0 mt-4 flex items-center justify-between border-t border-gray-50 dark:border-gray-800/50 pt-4">
+      <div className="p-5 mt-4 flex items-center justify-between border-t border-gray-50 dark:border-gray-800/50 pt-4">
         <span className="text-xl font-extrabold text-red-500">₹{price}</span>
         <Link
           href={`/book?service=${id}`}

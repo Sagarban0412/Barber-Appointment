@@ -59,15 +59,10 @@ const AboutPage = () => {
       <div className="relative h-[45vh] bg-slate-950 flex items-center justify-center overflow-hidden">
         <div 
           className="absolute inset-0 bg-[url('/barbershop.jpg')] bg-cover bg-center opacity-25"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-50 via-slate-950/70 to-slate-950/90 dark:from-gray-900" />
-        
+        />        
         <div className="relative z-10 text-center px-4 max-w-3xl">
-          <span className="inline-block px-3 py-1 rounded-full bg-red-500/10 text-red-500 dark:text-red-400 text-sm font-semibold mb-4 border border-red-500/20">
-            Our Legacy & Story
-          </span>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-800 dark:text-white mb-4">
-            About <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">BarberShop</span>
+            About <span className="text-transparent bg-clip-text bg-linear-to-r from-red-500 to-orange-500">BarberShop</span>
           </h1>
           <p className="text-base md:text-xl text-gray-600 dark:text-gray-300 font-light leading-relaxed max-w-2xl mx-auto">
             Blending traditional barbering heritage with cutting-edge styles to shape the ultimate grooming ritual.
@@ -100,7 +95,7 @@ const AboutPage = () => {
             <div className="pt-4">
               <Link
                 href="/book"
-                className="inline-flex items-center justify-center px-6 py-3.5 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-500/20 transition-all duration-300 transform hover:scale-[1.02] group"
+                className="inline-flex items-center justify-center px-6 py-3.5 bg-linear-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-500/20 transition-all duration-300 transform hover:scale-[1.02] group"
               >
                 <span>Book a Seat in Our Chair</span>
                 <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
@@ -109,7 +104,7 @@ const AboutPage = () => {
           </div>
 
           <div className="lg:w-1/2 w-full relative">
-            <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-750">
+            <div className="aspect-4/3 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-750">
               <img 
                 src="/barbershop.jpg" 
                 alt="Barbershop ambiance" 
@@ -117,7 +112,7 @@ const AboutPage = () => {
               />
             </div>
             {/* Overlay statistics badge */}
-            <div className="absolute -bottom-6 -left-6 bg-gradient-to-br from-red-500 to-red-600 text-white p-6 rounded-2xl shadow-xl flex items-center gap-4 border border-red-400/20">
+            <div className="absolute -bottom-6 -left-6 bg-linear-to-br from-red-500 to-red-600 text-white p-6 rounded-2xl shadow-xl flex items-center gap-4 border border-red-400/20">
               <div className="text-3xl font-black">5.0</div>
               <div className="border-l border-white/20 pl-4">
                 <div className="flex text-yellow-300 mb-1">
@@ -178,7 +173,7 @@ const AboutPage = () => {
                     alt={member.name} 
                     className="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-500" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-60" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/10 to-transparent opacity-60" />
                   
                   {/* Floating specialty badge */}
                   <div className="absolute bottom-4 left-4 px-3 py-1.5 rounded-lg bg-red-600/90 text-white text-xs font-bold shadow-md">

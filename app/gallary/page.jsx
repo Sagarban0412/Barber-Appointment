@@ -85,25 +85,15 @@ const GalleryPage = () => {
       <div className="relative h-[45vh] md:h-[50vh] bg-slate-950 flex items-center justify-center overflow-hidden">
         {/* Background Image with Dark Glassmorphism Overlay */}
         <div 
-          className="absolute inset-0 bg-[url('/barbershop.jpg')] bg-cover bg-center opacity-30 transform scale-105 transition-transform duration-[10000ms] ease-out hover:scale-100"
+          className="absolute inset-0 bg-[url('/barbershop.jpg')] bg-cover bg-center opacity-30 transform scale-105 transition-transform duration-10000 ease-out hover:scale-100"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-50 via-slate-950/70 to-slate-950/90 dark:from-gray-900" />
-        
-        {/* Animated Accent glow */}
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-red-500/10 rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-red-600/10 rounded-full blur-[100px] animate-pulse delay-700" />
-
-        <div className="relative z-10 text-center px-4 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-500 dark:text-red-400 text-sm font-medium mb-4 border border-red-500/25">
-            <Camera size={16} className="animate-bounce" />
-            <span>Exquisite Craftsmanship Portfolio</span>
-          </div>
-          
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-800 dark:text-white leading-tight mb-4">
-            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">Style Gallery</span>
+       
+        <div className="relative z-10 text-center px-4 max-w-3xl">          
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight mb-4">
+            Our <span className="text-transparent bg-clip-text bg-linear-to-r from-red-500 to-orange-500">Style Gallery</span>
           </h1>
           
-          <p className="text-base md:text-xl text-gray-600 dark:text-gray-300 font-light leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base md:text-xl text-white dark:text-gray-300 font-light leading-relaxed max-w-2xl mx-auto">
             Discover a visual chronicle of sharp fades, pristine trims, and ultimate grooming rituals sculpted by the master craftsmen at BarberShop.
           </p>
         </div>
@@ -120,7 +110,7 @@ const GalleryPage = () => {
               onClick={() => setActiveFilter(cat.id)}
               className={`px-6 py-3 rounded-full text-sm font-semibold tracking-wide transition-all duration-300 cursor-pointer shadow-sm ${
                 activeFilter === cat.id
-                  ? "bg-gradient-to-r from-red-500 to-red-600 text-white shadow-red-500/20 shadow-lg scale-105"
+                  ? "bg-linear-to-r from-red-500 to-red-600 text-white shadow-red-500/20 shadow-lg scale-105"
                   : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:border-red-400 dark:hover:border-red-500 hover:text-red-500 hover:scale-102"
               }`}
             >
@@ -151,7 +141,7 @@ const GalleryPage = () => {
                 />
 
                 {/* Dark Vignette Overlay on Hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-85 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-85 transition-opacity duration-300" />
                 
                 {/* Micro-Interaction Indicator icon */}
                 <div className="absolute top-4 right-4 p-3 rounded-full bg-white/10 backdrop-blur-md text-white border border-white/20 opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300">
@@ -222,7 +212,7 @@ const GalleryPage = () => {
             </button>
 
             {/* Lightbox Image representation */}
-            <div className="md:w-1/2 relative h-72 md:h-auto min-h-[320px] bg-slate-950 flex items-center justify-center">
+            <div className="md:w-1/2 relative h-72 md:h-auto min-h-80 bg-slate-950 flex items-center justify-center">
               <img
                 src={selectedItem.image}
                 alt={selectedItem.title}
@@ -268,7 +258,7 @@ const GalleryPage = () => {
               <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-100 dark:border-gray-700">
                 <Link
                   href={`/book`}
-                  className="flex-1 text-center py-3.5 px-6 font-bold bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-xl shadow-lg shadow-red-500/20 hover:shadow-xl hover:shadow-red-600/30 transition-all duration-300 scale-100 hover:scale-[1.02]"
+                  className="flex-1 text-center py-3.5 px-6 font-bold bg-linear-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-xl shadow-lg shadow-red-500/20 hover:shadow-xl hover:shadow-red-600/30 transition-all duration-300 scale-100 hover:scale-[1.02]"
                   onClick={() => setSelectedItem(null)}
                 >
                   Book Appointment Now

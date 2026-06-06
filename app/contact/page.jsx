@@ -36,18 +36,14 @@ const ContactPage = () => {
       {/* Hero Banner Section */}
       <div className="relative h-[45vh] bg-slate-950 flex items-center justify-center overflow-hidden">
         <div 
-          className="absolute inset-0 bg-[url('/barbershop.jpg')] bg-cover bg-center opacity-25 animate-pulse"
+          className="absolute inset-0 bg-[url('/barbershop.jpg')] bg-cover bg-center opacity-50"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-50 via-slate-950/70 to-slate-950/90 dark:from-gray-900" />
         
         <div className="relative z-10 text-center px-4 max-w-3xl">
-          <span className="inline-block px-3 py-1 rounded-full bg-red-500/10 text-red-500 dark:text-red-400 text-sm font-semibold mb-4 border border-red-500/20">
-            Let's Get In Touch
-          </span>
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-800 dark:text-white mb-4">
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white dark:text-white mb-4">
             Contact <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">Our Shop</span>
           </h1>
-          <p className="text-base md:text-xl text-gray-600 dark:text-gray-300 font-light leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base md:text-xl text-white dark:text-gray-300 font-light leading-relaxed max-w-2xl mx-auto">
             Have a question, feedback, or want a custom service? Reach out to us and we'll get back to you shortly.
           </p>
         </div>
