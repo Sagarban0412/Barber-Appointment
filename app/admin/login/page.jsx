@@ -1,6 +1,5 @@
 "use client";
 import axios from "axios";
-import { NextResponse } from "next/server";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -17,21 +16,22 @@ const page = () => {
       [name]: value,
     }));
   };
-const router = useRouter();
+  const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
       setIsLoggedIn(true);
-      const res = await axios.post("/api/admin", loginData);
-      console.log(res.data);
-      router.push("/admin/dashboard")
+      await axios.post("/api/admin", loginData);
+      // console.log(res.data);
+      router.push("/admin/dashboard");
     } catch (error) {
       console.log("error message:" + error.message);
     } finally {
       setIsLoggedIn(false);
     }
   };
+
   return (
     <div className="flex h-screen w-screen">
       <div className="flex-1/2 flex-col bg-white text-black flex justify-center items-center w-1/2">

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   BarChart,
@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const AdminSidebar = () => {
   const sidebarItems = [
@@ -24,9 +26,31 @@ const AdminSidebar = () => {
     { name: "Services", link: "/admin/dashboard/services", icon: <Scissors /> },
     { name: "Barbers", link: "/admin/dashboard/barbers", icon: <User2 /> },
     { name: "Settings", link: "/admin/dashboard/settings", icon: <Settings /> },
-    { name: "Sale Reports", link: "/admin/dashboard/sales", icon: <BarChart /> },
-    { name: "Logout", link: "/admin/dashboard/logout", icon: <LogOut /> },
+    {
+      name: "Sale Reports",
+      link: "/admin/dashboard/sales",
+      icon: <BarChart />,
+    },
+    { name: "Logout", link: "", icon: <LogOut /> },
   ];
+
+  const router = useRouter();
+
+  //logout functionality
+  const handleLogout = async () => {
+    const confirmed = window.confirm("Are you sure you want to logout?");
+
+    if (!confirmed) return;
+
+    try {
+      await axios.post("/api/logout");
+
+      router.push("/admin/login");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const [isActive, setIsActive] = useState("Dashboard");
   return (
@@ -36,16 +60,30 @@ const AdminSidebar = () => {
         <h1>Barber Shop</h1>
       </div>
       <div>
-        {sidebarItems.map((item, index) => (
-          <Link
-            href={item.link}
-            key={index}
-            className={`flex items-center gap-2 p-4 ${isActive === item.name ? "bg-red-400" : ""}`}
-            onClick={()=>setIsActive(item.name)}
-          >
-            {item.icon} <span>{item.name}</span>
-          </Link>
-        ))}
+        {sidebarItems.map((item, index) =>
+          item.name === "Logout" ? (
+            <button
+              key={index}
+              onClick={handleLogout}
+              className="flex w-full items-center gap-2 p-4 text-left hover:bg-red-400"
+            >
+              {item.icon}
+              <span>{item.name}</span>
+            </button>
+          ) : (
+            <Link
+              key={index}
+              href={item.link}
+              className={`flex items-center gap-2 p-4 ${
+                isActive === item.name ? "bg-red-400" : ""
+              }`}
+              onClick={() => setIsActive(item.name)}
+            >
+              {item.icon}
+              <span>{item.name}</span>
+            </Link>
+          ),
+        )}
       </div>
     </div>
   );
