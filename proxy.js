@@ -17,5 +17,5 @@ export function proxy(request) {
 }
 
 export const config = {
-  matcher: ["/admin/dashboard/"],
+  matcher: ["/admin/dashboard/:path*"],
 };
