@@ -24,6 +24,9 @@ export async function POST(request) {
       );
     }
 
+    if (!process.env.JWT_SECRET) {
+      return NextResponse.json({ message: "Server misconfiguration" }, { status: 500 });
+    }
     const token = jwt.sign(
       {
         id: admin._id,
