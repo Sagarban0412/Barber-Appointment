@@ -4,7 +4,6 @@ import Footer from "@/components/Footer";
 import { Calendar, Clock, User, Phone, Scissors, Mail } from "lucide-react";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { getAllServices } from "@/data/services";
 import { generateTimeSlots } from "@/data/barbers";
 import OtpInput from "@/components/OtpInput";
 import axios from "axios";
