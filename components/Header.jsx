@@ -28,6 +28,7 @@ const Header = () => {
           </h1>
         </div>
         <div className="hidden sm:flex items-center justify-center gap-5 md:gap-7 lg:gap-10">
+          <Link href={"/profile"} className="text-gray-700 dark:text-gray-300 hover:text-red-400 transition-colors">Profile</Link>
           <Link href={"/gallary"} className="text-gray-700 dark:text-gray-300 hover:text-red-400 transition-colors">Gallery</Link>
           <Link href={"/services"} className="text-gray-700 dark:text-gray-300 hover:text-red-400 transition-colors">Services</Link>
           <Link href={"/about"} className="text-gray-700 dark:text-gray-300 hover:text-red-400 transition-colors">About</Link>

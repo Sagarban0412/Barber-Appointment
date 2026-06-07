@@ -50,7 +50,7 @@ const ConfirmContent = () => {
           <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700 animate-scaleUp">
             
             {/* Header Success Section */}
-            <div className="bg-gradient-to-br from-green-500 to-emerald-600 text-white text-center py-12 px-6 relative">
+            <div className="bg-linear-to-br from-green-500 to-emerald-600 text-white text-center py-12 px-6 relative">
               {/* Background abstract overlay pattern */}
               <div className="absolute inset-0 bg-[url('/barbershop.jpg')] bg-cover bg-center opacity-10 mix-blend-overlay" />
               
@@ -179,7 +179,7 @@ const ConfirmContent = () => {
               <div className="pt-6 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row gap-3">
                 <Link
                   href="/"
-                  className="flex-1 text-center py-3.5 px-6 font-bold bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-xl shadow-lg shadow-red-500/10 transition-all duration-300 scale-100 hover:scale-[1.02]"
+                  className="flex-1 text-center py-3.5 px-6 font-bold bg-linear-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-xl shadow-lg shadow-red-500/10 transition-all duration-300 scale-100 hover:scale-[1.02]"
                 >
                   Return to Home
                 </Link>

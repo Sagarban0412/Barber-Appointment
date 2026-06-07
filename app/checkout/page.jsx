@@ -53,7 +53,7 @@ const CheckoutContent = () => {
     try {
       const customerRes = await axios.post("/api/create-customer", bookingData);
       console.log("Customer:", customerRes.data);
-
+    
       const appointmentRes = await axios.post("/api/appointment", bookingData);
       console.log("Appointment:", appointmentRes.data);
 

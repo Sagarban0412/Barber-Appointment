@@ -9,6 +9,7 @@ import {
   Settings,
   User,
   User2,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -18,6 +19,7 @@ import { useRouter } from "next/navigation";
 const AdminSidebar = () => {
   const sidebarItems = [
     { name: "Dashboard", link: "/admin/dashboard", icon: <LayoutDashboard /> },
+    { name: "Users", link: "/admin/dashboard/users", icon: <Users /> },
     {
       name: "Appointments",
       link: "/admin/dashboard/appointments",

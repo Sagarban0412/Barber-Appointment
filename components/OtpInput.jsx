@@ -1,19 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import axios from "axios";
 
 const OtpInput = ({ onChange, correctOtp, formData }) => {
   const [value, setValue] = useState("");
-  const handelConfirm = () => {
-    if(value === ""){
-      return alert("Please enter the otp")
+  const handelConfirm = async () => {
+    if (value === "") {
+      return alert("Please enter the otp");
     }
-    
+
     if (value === correctOtp) {
       const params = new URLSearchParams({
         name: formData.name,
@@ -24,6 +25,18 @@ const OtpInput = ({ onChange, correctOtp, formData }) => {
         time: formData.time,
         notes: formData.notes || "",
       });
+
+      await axios.post(
+        "/api/customer/login",
+        {
+          name: formData.name,
+          email: formData.email,
+        },
+        {
+          withCredentials: true,
+        },
+      );
+
       onChange(false);
       window.location.href = `/checkout?${params.toString()}`;
     } else {
