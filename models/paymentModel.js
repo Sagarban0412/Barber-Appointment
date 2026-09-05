@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const paymentSchema = new mongoose.Schema(
   {
-    sessionId: { type: String, required: true, unique: true, index: true },
+    sessionId: { type: String, default: null, unique: true, sparse: true, index: true },
     paymentIntent: { type: String, default: null },
     amount: { type: Number, required: true },
     currency: { type: String, required: true, default: "inr" },

@@ -5,6 +5,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Scissors, Sparkles, Gift } from "lucide-react";
+import StyleQuizCard from "@/components/StyleQuizCard";
 
 const Page = () => {
   const [services, setServices] = useState([]);
@@ -79,8 +80,10 @@ const Page = () => {
       </div>
 
       {/* Page Wrapper */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20 relative z-20">
-        
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12 relative z-20">
+
+        <StyleQuizCard variant="card" />
+
         {loading ? (
           <div className="text-center py-20 text-gray-400">Loading styling menus...</div>
         ) : (

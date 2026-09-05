@@ -11,10 +11,12 @@ import axios from "axios";
 const BookingForm = () => {
   const searchParams = useSearchParams();
   const serviceId = searchParams.get("service");
+  const prefilledName = searchParams.get("name") || "";
+  const prefilledEmail = searchParams.get("email") || "";
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    name: prefilledName,
+    email: prefilledEmail,
     service: serviceId || "",
     barber: "",
     date: "",

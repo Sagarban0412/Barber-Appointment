@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import PopularServices from "@/components/PopularServicesCard";
+import StyleQuizCard from "@/components/StyleQuizCard";
 import { Droplet, Scissors, Sofa } from "lucide-react";
 import React from "react";
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,6 +16,7 @@ const Page = () => {
       <div>
         <Header />
         <HeroSection />
+        <StyleQuizCard variant="banner" />
         {/* Philosophy div */}
         <div className="text-center px-4 md:px-6 lg:px-10 xl:px-20 py-10 flex flex-col items-center gap-2">
           <h1 className="font-semibold text-lg md:text-xl xl:text-3xl ">
@@ -22,7 +24,7 @@ const Page = () => {
           </h1>
 
           <p className="text-gray-400 max-w-225 text-justify">
-            We belive a haircut more than just maintenance.it's a ritual. Our
+            We belive a haircut more than just maintenance. it&apos;s a ritual. Our
             barber are Master craftmen dedicated to your style,blending
             traditional techniques with modern
           </p>
