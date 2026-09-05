@@ -19,7 +19,7 @@ export const generateTimeSlots = (start, end, durationMinutes) => {
 
   return slots;
 };
- 
+
 
 export const getDayName = (dateString) => {
   const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -29,10 +29,10 @@ export const getDayName = (dateString) => {
 
 export const getAvailableTimeSlots = (barberId, selectedDate) => {
   if (!barberId || !selectedDate) return [];
-  
+
   const barber = barbersData.find(b => b.id === parseInt(barberId));
   if (!barber) return [];
-  
+
   const dayName = getDayName(selectedDate);
   return barber.schedule[dayName] || [];
 };

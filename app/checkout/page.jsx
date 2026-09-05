@@ -11,6 +11,7 @@ import {
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const CheckoutContent = () => {
   const searchParams = useSearchParams();
@@ -46,14 +47,29 @@ const CheckoutContent = () => {
     if (bookingData.service && bookingData.barber) fetchDetails();
   }, []);
 
+  useEffect(() => {
+    if (searchParams.get("status") === "cancelled") {
+      toast.error("Payment cancelled. Please try again.");
+    }
+  }, [searchParams]);
+
   const handlePayment = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
     setIsSubmitting(true);
     try {
+      if (paymentMethod === "stripe") {
+        const res = await axios.post("/api/checkout", bookingData);
+        if (res.data?.url) {
+          window.location.href = res.data.url;
+          return;
+        }
+        throw new Error("No checkout URL returned");
+      }
+
       const customerRes = await axios.post("/api/create-customer", bookingData);
       console.log("Customer:", customerRes.data);
-    
+
       const appointmentRes = await axios.post("/api/appointment", bookingData);
       console.log("Appointment:", appointmentRes.data);
 
@@ -67,6 +83,14 @@ const CheckoutContent = () => {
       setIsSubmitting(false);
     }
   };
+
+  const buttonLabel = (() => {
+    if (isSubmitting) return "Processing...";
+    if (!selectedService?.price) return "Check Out";
+    return paymentMethod === "stripe"
+      ? `Pay ₹${selectedService.price} with Stripe`
+      : `Check Out (₹${selectedService.price})`;
+  })();
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
@@ -102,7 +126,7 @@ const CheckoutContent = () => {
                   </p>
                   <p className="text-sm text-gray-500">{selectedService?.duration} mins</p>
                 </div>
-                <p className="font-bold text-red-500">Rs.{selectedService?.price}</p>
+                <p className="font-bold text-red-500">₹{selectedService?.price}</p>
               </div>
 
               <div className="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
@@ -138,7 +162,7 @@ const CheckoutContent = () => {
               <div className="border-t pt-4 mt-4">
                 <div className="flex justify-between items-center text-lg font-bold">
                   <span className="text-gray-900 dark:text-white">Total Amount:</span>
-                  <span className="text-red-500">Rs.{selectedService?.price}</span>
+                  <span className="text-red-500">₹{selectedService?.price}</span>
                 </div>
               </div>
             </div>
@@ -151,7 +175,7 @@ const CheckoutContent = () => {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                   Payment Method
                 </label>
-                <label className="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                <label className="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 mb-2">
                   <input
                     type="radio"
                     name="payment"
@@ -163,6 +187,18 @@ const CheckoutContent = () => {
                   <span className="mr-2">💰</span>
                   <span className="text-gray-900 dark:text-white">Pay at Shop</span>
                 </label>
+                <label className="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="stripe"
+                    checked={paymentMethod === "stripe"}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="mr-3"
+                  />
+                  <span className="mr-2">💳</span>
+                  <span className="text-gray-900 dark:text-white">Pay Online (Stripe)</span>
+                </label>
               </div>
               <button
                 type="submit"
@@ -171,7 +207,7 @@ const CheckoutContent = () => {
                   isSubmitting ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700 text-white"
                 }`}
               >
-                {isSubmitting ? "Processing..." : `Check Out (Rs.${selectedService?.price ?? ""})`}
+                {buttonLabel}
               </button>
             </form>
           </div>

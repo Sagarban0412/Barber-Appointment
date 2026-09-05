@@ -19,21 +19,21 @@ export function proxy(request) {
 
   //protected Profile routes
 
-  if(pathname.startsWith("/profile")) {
-   const customerToken = request.cookies.get("customerToken")?.value
-    
-   if(!customerToken){
-    return NextResponse.redirect(new URL("/confirmUser",request.url))
-   }
+  if (pathname.startsWith("/profile")) {
+    const customerToken = request.cookies.get("customerToken")?.value
+
+    if (!customerToken) {
+      return NextResponse.redirect(new URL("/confirmUser", request.url))
+    }
     try {
-      jwt.verify(customerToken,process.env.JWT_SECRET)
+      jwt.verify(customerToken, process.env.JWT_SECRET)
       return NextResponse.next()
-    }catch{
-      return NextResponse.redirect(new URL("/confirmUser",request.url));
+    } catch {
+      return NextResponse.redirect(new URL("/confirmUser", request.url));
     }
   }
 }
 
 export const config = {
-  matcher: ["/admin/dashboard/:path*","/profile"],
+  matcher: ["/admin/dashboard/:path*", "/profile"],
 };

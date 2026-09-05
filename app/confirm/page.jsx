@@ -1,5 +1,5 @@
 "use client"
-import React, { Suspense, useState, useEffect } from "react";
+import React, { Suspense, useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -9,6 +9,15 @@ import { CheckCircle2, Calendar, Clock, User, Scissors, Mail, FileText, CreditCa
 
 const ConfirmContent = () => {
   const searchParams = useSearchParams();
+  const sessionId = searchParams.get("session_id");
+
+  if (sessionId) {
+    return <StripeConfirm sessionId={sessionId} />;
+  }
+  return <CashConfirm searchParams={searchParams} />;
+};
+
+const CashConfirm = ({ searchParams }) => {
   const name = searchParams.get("name");
   const email = searchParams.get("email");
   const serviceId = searchParams.get("service");
@@ -16,7 +25,6 @@ const ConfirmContent = () => {
   const date = searchParams.get("date");
   const time = searchParams.get("time");
   const notes = searchParams.get("notes");
-  const paymentMethod = searchParams.get("paymentMethod") || "cash";
 
   const [service, setService] = useState(null);
   const [barber, setBarber] = useState(null);
@@ -42,18 +50,118 @@ const ConfirmContent = () => {
   }, [serviceId, barberId]);
 
   return (
+    <ConfirmLayout
+      loading={loading}
+      paymentBadge="Pay at Shop"
+      paymentBadgeClass="bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20"
+      name={name}
+      email={email}
+      service={service}
+      barber={barber}
+      date={date}
+      time={time}
+      notes={notes}
+    />
+  );
+};
+
+const StripeConfirm = ({ sessionId }) => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchFinalize = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await axios.get(`/api/appointment/finalize?session_id=${sessionId}`);
+      setData(res.data);
+    } catch (err) {
+      setError(err.response?.data?.message || err.message || "Failed to load booking");
+    } finally {
+      setLoading(false);
+    }
+  }, [sessionId]);
+
+  useEffect(() => {
+    fetchFinalize();
+  }, [fetchFinalize]);
+
+  if (loading) {
+    return (
+      <ConfirmLayout loading>
+        <div className="text-center py-10 text-gray-400">
+          <div className="animate-pulse">Finalizing your booking…</div>
+          <p className="text-sm mt-2 text-gray-400">This usually takes a few seconds.</p>
+        </div>
+      </ConfirmLayout>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <ConfirmLayout loading={false}>
+        <div className="text-center py-10">
+          <p className="text-red-500 font-medium mb-4">
+            {error || "Could not load your booking."}
+          </p>
+          <button
+            onClick={fetchFinalize}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg"
+          >
+            Retry
+          </button>
+        </div>
+      </ConfirmLayout>
+    );
+  }
+
+  const service = data.appointment?.serviceId;
+  const barber = data.appointment?.barberId;
+  const date = data.appointment?.appointmentDate;
+  const time = data.appointment?.appointmentTime;
+
+  return (
+    <ConfirmLayout
+      loading={false}
+      paymentBadge="Paid Online"
+      paymentBadgeClass="bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20"
+      name={data.customer?.name}
+      email={data.customer?.email}
+      service={service}
+      barber={barber}
+      date={date}
+      time={time}
+      notes={data.notes}
+    />
+  );
+};
+
+const ConfirmLayout = ({
+  loading,
+  paymentBadge,
+  paymentBadgeClass,
+  name,
+  email,
+  service,
+  barber,
+  date,
+  time,
+  notes,
+  children,
+}) => {
+  return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 flex flex-col justify-between">
       <div>
         <Header />
-        
+
         <div className="max-w-3xl mx-auto px-4 py-16 md:py-24">
           <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700 animate-scaleUp">
-            
+
             {/* Header Success Section */}
             <div className="bg-linear-to-br from-green-500 to-emerald-600 text-white text-center py-12 px-6 relative">
-              {/* Background abstract overlay pattern */}
               <div className="absolute inset-0 bg-[url('/barbershop.jpg')] bg-cover bg-center opacity-10 mix-blend-overlay" />
-              
+
               <div className="relative z-10 space-y-3">
                 <CheckCircle2 size={64} className="mx-auto text-white animate-bounce" />
                 <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
@@ -67,19 +175,21 @@ const ConfirmContent = () => {
 
             {/* Receipt Content Body */}
             <div className="p-6 md:p-10 space-y-8">
-              
+
               <div className="flex justify-between items-center border-b border-gray-100 dark:border-gray-700 pb-4">
                 <h2 className="text-lg font-bold tracking-tight">Booking Summary Details</h2>
-                <span className="text-xs font-semibold px-3 py-1 bg-green-500/10 text-green-600 dark:text-green-400 rounded-full border border-green-500/20">
-                  Paid at Shop
+                <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${paymentBadgeClass}`}>
+                  {paymentBadge}
                 </span>
               </div>
 
-              {loading ? (
+              {children ? (
+                children
+              ) : loading ? (
                 <div className="text-center py-10 text-gray-400">Fetching receipt details...</div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  
+
                   {/* Left Column: Customer details */}
                   <div className="space-y-4">
                     <div className="flex items-start gap-3">
@@ -149,7 +259,7 @@ const ConfirmContent = () => {
                       <div>
                         <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Payment Status</h4>
                         <p className="font-bold mt-0.5 uppercase text-sm">
-                          {paymentMethod === "cash" ? "Pay at Shop" : "Online Payment"}
+                          {paymentBadge === "Paid Online" ? "Paid Online" : "Pay at Shop"}
                         </p>
                       </div>
                     </div>
@@ -159,7 +269,7 @@ const ConfirmContent = () => {
               )}
 
               {/* Notes block if present */}
-              {notes && (
+              {notes && !children && (
                 <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-150 dark:border-gray-600 flex gap-3 items-start">
                   <FileText size={18} className="text-red-500 mt-0.5" />
                   <div>
@@ -170,10 +280,12 @@ const ConfirmContent = () => {
               )}
 
               {/* Total amount section */}
-              <div className="border-t border-dashed border-gray-200 dark:border-gray-700 pt-6 flex justify-between items-center text-xl font-extrabold">
-                <span>Amount Due:</span>
-                <span className="text-red-500">₹{service?.price || 150}</span>
-              </div>
+              {!children && (
+                <div className="border-t border-dashed border-gray-200 dark:border-gray-700 pt-6 flex justify-between items-center text-xl font-extrabold">
+                  <span>Amount Due:</span>
+                  <span className="text-red-500">₹{service?.price || 150}</span>
+                </div>
+              )}
 
               {/* Footer CTAs */}
               <div className="pt-6 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row gap-3">

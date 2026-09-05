@@ -37,12 +37,12 @@ const BookingForm = () => {
         console.error("Failed to fetch services:", error);
       }
     };
-    const getBarbers = async ()=>{
-      try{
+    const getBarbers = async () => {
+      try {
         const barber = await axios.get('/api/barber')
         setBarbers(barber.data.barbers);
         console.log(barber.data.barbers)
-      }catch(error){
+      } catch (error) {
         console.error("Failed to fetch barbers:", error);
       }
     }
@@ -76,7 +76,7 @@ const BookingForm = () => {
     } else {
       setAvailableTimeSlots([]);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.barber, formData.date, formData.service]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -214,7 +214,7 @@ const BookingForm = () => {
                     <option value="">Choose a barber</option>
                     {barbers.map((barber) => (
                       <option key={barber._id} value={barber._id}>
-                        {barber.name} - {barber.specialty[0]+", "+ barber.specialty[1]}
+                        {barber.name} - {barber.specialty[0] + ", " + barber.specialty[1]}
                       </option>
                     ))}
                   </select>
@@ -286,11 +286,10 @@ const BookingForm = () => {
               {/* Submit Button */}
               <button
                 disabled={isSubmitting}
-                className={`w-full font-semibold py-3 px-6 rounded-lg transition-colors ${
-                  isSubmitting
+                className={`w-full font-semibold py-3 px-6 rounded-lg transition-colors ${isSubmitting
                     ? "bg-gray-400"
                     : "bg-red-500 hover:bg-red-600 text-white"
-                }`}
+                  }`}
               >
                 {isSubmitting ? "Sending OTP..." : "Book Appointment"}
               </button>
